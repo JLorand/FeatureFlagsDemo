@@ -2,6 +2,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using FeatureFlagsDemo.Database;
 using FeatureFlagsDemo.Features;
+using FeatureFlagsDemo.Features.VATCalculation;
+using FeatureFlagsDemo.Features.VATCalculation.InvoicingFeatures;
 using FeatureFlagsDemo.Options;
 using FeatureFlagsDemo.Services;
 using Microsoft.AspNetCore.Http.Json;
@@ -28,6 +30,11 @@ builder.Services.AddFeatureManagement();
 builder.Services.Configure<VATOptions>(builder.Configuration.GetSection(VATOptions.Position));
 
 builder.Services.AddTransient<IVATCalculationFeature, VATCalculationFeature>();
+
+builder.Services.AddTransient<IInvoicing, BasicInvoicing>();
+builder.Services.AddTransient<IInvoicing, VatAppliedInvoicing>();
+
+builder.Services.AddTransient<FeatureAwareInvoicing>();
 
 var app = builder.Build();
 
