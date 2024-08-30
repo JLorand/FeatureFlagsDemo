@@ -1,4 +1,4 @@
-﻿namespace FeatureFlagsDemo.FeatureFlags;
+﻿namespace FeatureFlagsDemo.Features.FeatureFlags;
 
 public static class Features
 {

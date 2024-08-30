@@ -2,10 +2,11 @@
 using FeatureFlagsDemo.Database;
 using FeatureFlagsDemo.DTOs;
 using FeatureFlagsDemo.Entities;
-using FeatureFlagsDemo.FeatureFlags;
+using FeatureFlagsDemo.Features;
 using FeatureFlagsDemo.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+// Getting rid of the MS.FeatureManagement third-party library local dependency
 using Microsoft.FeatureManagement;
 
 namespace FeatureFlagsDemo.Services;
@@ -13,7 +14,7 @@ namespace FeatureFlagsDemo.Services;
 public class InvoiceService(
     AppDbContext dbContext,
     IMapper mapper,
-    IFeatureManager featureManager,
+    IVATCalculationFeature vatCalculationFeature,
     IOptions<VATOptions> vatOptions)
     : IInvoiceService
 {
@@ -23,7 +24,7 @@ public class InvoiceService(
     {
         var invoices = await dbContext.Invoices.Include(i => i.Items).ToListAsync();
 
-        if (await featureManager.IsEnabledAsync(Features.VATCalculation))
+        if (await vatCalculationFeature.IsEnabled())
         {
             return invoices.Select(i => new InvoiceDTO
             {
