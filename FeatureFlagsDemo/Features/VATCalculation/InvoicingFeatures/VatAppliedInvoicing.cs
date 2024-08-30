@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace FeatureFlagsDemo.Features.VATCalculation.InvoicingFeatures;
 
-public class VatAppliedInvoicing(AppDbContext dbContext, IMapper mapper, IOptions<VATOptions> vatOptions) : IInvoicing
+public class VatAppliedInvoicing(AppDbContext dbContext, IMapper mapper, IOptionsSnapshot<VATOptions> vatOptions) : IInvoicing
 {
     private readonly VATOptions _vat = vatOptions.Value;
     
