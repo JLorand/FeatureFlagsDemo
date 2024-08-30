@@ -1,9 +1,11 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using FeatureFlagsDemo.Database;
+using FeatureFlagsDemo.Options;
 using FeatureFlagsDemo.Services;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,10 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddTransient<IInvoiceService, InvoiceService>();
+
+builder.Services.AddFeatureManagement();
+
+builder.Services.Configure<VATOptions>(builder.Configuration.GetSection(VATOptions.Position));
 
 var app = builder.Build();
 
